@@ -20,7 +20,6 @@ public class TileBoard : MonoBehaviour
     {
         CreateTile();
         CreateTile();
-        CreateTile();
     }
 
     private void CreateTile()
@@ -75,7 +74,11 @@ public class TileBoard : MonoBehaviour
         {
             if (adjacentCell.occupied)
             {
-                // AHH HI YYAA
+                if (CanMerge(tile, adjacentCell.tile))
+                {
+                    Merge(tile, adjacentCell.tile);
+                    return true;
+                }
                 break;
             }
 
@@ -90,6 +93,33 @@ public class TileBoard : MonoBehaviour
         return false;
     }
 
+    private bool CanMerge(Tile a, Tile b)
+    {
+        return a.number == b.number && !b.locked;
+    }
+
+    private void Merge(Tile a, Tile b)
+    {
+        tiles.Remove(a);
+        a.Merge(b.cell);
+
+        int index = Mathf.Clamp(IndexOf(b.state) + 1, 0, tileStates.Length - 1);
+        int number = b.number * 2;
+
+        b.SetState(tileStates[index], number);
+    }
+
+    private int IndexOf(TileState state)
+    {
+        for (int i = 0; i < tileStates.Length; i++)
+        {
+            if (tileStates[i] == state) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private IEnumerator WaitForChanges()
     {
         waiting = true;
@@ -97,6 +127,15 @@ public class TileBoard : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
     
         waiting = false;
+
+        foreach (var tile in tiles) {
+            tile.locked = false;
+        }
+
+        if (tiles.Count != grid.size) {
+            CreateTile();
+        }
+
     }
 
 }
