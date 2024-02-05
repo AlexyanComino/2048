@@ -19,6 +19,7 @@ public class TileBoard : MonoBehaviour
     {
         CreateTile();
         CreateTile();
+        CreateTile();
     }
 
     private void CreateTile()
