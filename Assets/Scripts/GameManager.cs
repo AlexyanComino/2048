@@ -4,6 +4,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public CanvasGroup mainMenu;
     public TileBoard board;
     public CanvasGroup gameOver;
     public TextMeshProUGUI scoreText;
