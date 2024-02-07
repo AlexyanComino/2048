@@ -4,16 +4,28 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public CanvasGroup mainMenu;
     public TileBoard board;
+    public CanvasGroup mainMenu;
+    public CanvasGroup winMenu;
     public CanvasGroup gameOver;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI highscoreText;
 
     private int score;
+    public bool isWin;
 
     private void Start()
     {
+        isWin = false;
+        NewGame();
+    }
+
+    public void StartGame()
+    {
+        mainMenu.alpha = 0f;
+        mainMenu.interactable = false;
+        Destroy(mainMenu.gameObject);
+
         NewGame();
     }
 
@@ -23,6 +35,8 @@ public class GameManager : MonoBehaviour
         highscoreText.text = LoadHighscore().ToString();
         gameOver.alpha = 0f;
         gameOver.interactable = false;
+        winMenu.alpha = 0f;
+        winMenu.interactable = false;
 
         board.ClearBoard();
         board.CreateTile();
@@ -30,9 +44,24 @@ public class GameManager : MonoBehaviour
         board.enabled = true;
     }
 
-    public void GameOver()
+    public void Continue()
+    {
+        winMenu.alpha = 0f;
+        winMenu.interactable = false;
+        board.enabled = true;
+    }
+
+    public void Win()
     {
         board.enabled = false;
+        winMenu.interactable = true;
+
+        StartCoroutine(Fade(winMenu, 1f, 0.5f));
+    }
+
+    public void GameOver()
+    {
+        board.enabled = false;  
         gameOver.interactable = true;
 
         StartCoroutine(Fade(gameOver, 1f, 1f));
