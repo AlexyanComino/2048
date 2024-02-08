@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public CanvasGroup winMenu;
     public CanvasGroup gameOver;
     public CanvasGroup optionsMenu;
+    public CanvasGroup pauseMenu;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI highscoreText;
 
@@ -19,15 +20,14 @@ public class GameManager : MonoBehaviour
     public Color[][] Colors = new Color[3][]
     {
         new Color[] { new Color(0.9803922f, 0.972549f, 0.9372549f), new Color(0.6f, 0.6f, 0.6f), new Color(0.7f, 0.7f, 0.7f) },
-        new Color[] { new Color(0.5f, 0.5f, 0.5f), new Color(0.6f, 0.6f, 0.6f), new Color(0.7f, 0.7f, 0.7f) },
-        new Color[] { new Color(0.0f, 0.9f, 0.4f), new Color(0.6f, 0.6f, 0.6f), new Color(0.7f, 0.7f, 0.7f) }
+        new Color[] { new Color(0.3427602f, 0.3427602f, 0.3427602f), new Color(0.6f, 0.6f, 0.6f), new Color(0.7f, 0.7f, 0.7f) },
+        new Color[] { new Color(0.4588235f, 0.5176471f, 0.4039216f), new Color(0.6f, 0.6f, 0.6f), new Color(0.7f, 0.7f, 0.7f) }
     };
 
     private void Start()
     {
-        themeIndex = 0;
-        isWin = false;
         NewGame();
+        board.enabled = false;
     }
 
     public void StartGame()
@@ -52,6 +52,9 @@ public class GameManager : MonoBehaviour
         optionsMenu.alpha = 0f;
         optionsMenu.interactable = false;
         optionsMenu.blocksRaycasts = false;
+        pauseMenu.alpha = 0f;
+        pauseMenu.interactable = false;
+        pauseMenu.blocksRaycasts = false;
 
         board.ClearBoard();
         board.CreateTile();
@@ -63,7 +66,17 @@ public class GameManager : MonoBehaviour
     {
         winMenu.alpha = 0f;
         winMenu.interactable = false;
+        pauseMenu.alpha = 0f;
+        pauseMenu.interactable = false;
         board.enabled = true;
+    }
+
+    public void Pause()
+    {
+        board.enabled = false;
+        pauseMenu.alpha = 0.85f;
+        pauseMenu.interactable = true;
+        pauseMenu.blocksRaycasts = true;
     }
 
     public void Win()
@@ -100,6 +113,9 @@ public class GameManager : MonoBehaviour
         optionsMenu.alpha = 0f;
         optionsMenu.interactable = false;
         optionsMenu.blocksRaycasts = false;
+        pauseMenu.alpha = 0f;
+        pauseMenu.interactable = false;
+        pauseMenu.blocksRaycasts = false;
 
         mainMenu.alpha = 1f;
         mainMenu.interactable = true;
@@ -109,7 +125,7 @@ public class GameManager : MonoBehaviour
     public void SwitchTheme()
     {
         themeIndex = (themeIndex != 2) ? themeIndex + 1 : 0;
-        mainCamera.backgroundColor = Colors[themeIndex][0];
+        mainCamera.backgroundColor = Colors[themeIndex][0]; 
     }
 
     private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay)

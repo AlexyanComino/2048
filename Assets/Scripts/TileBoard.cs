@@ -52,6 +52,8 @@ public class TileBoard : MonoBehaviour
                 MoveTiles(Vector2Int.left, 1, 1, 0, 1);
             } else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
                 MoveTiles(Vector2Int.right, grid.width - 2, -1, 0, 1);
+            } else if (Input.GetKeyDown(KeyCode.Escape)) {
+                gameManager.Pause();
             }
         }
     }
